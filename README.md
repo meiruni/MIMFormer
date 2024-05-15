@@ -16,16 +16,17 @@
 ## 1. Create Envirement:
 
 - Python 3 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
-
 - NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads)
 
-[pip install timm
-pip install thop
-pip install scikit-image
-pip install scipy
-pip install einops
-pip install opencv-python
-pip install tensorboard]()
+Simply use the "pip install" command to install the following packages:
+
+- timm
+- thop
+- scikit-image
+- scipy
+- einops
+- opencv-python
+- tensorboard
 
 ## 2. Data Preparation:
 
@@ -34,10 +35,10 @@ pip install tensorboard]()
 - Download the WDCM dataset from <a href="[MSST-Net/README.md at main · jx-mzc/MSST-Net · GitHub](https://github.com/jx-mzc/MSST-Net/blob/main/README.md)">here</a>.
 -  the real remote sensing dataset ZY1E, which was used in this study, has been completely uploaded and can be accessed through the following link: [https: //pan.baidu.com/s/1qoY9tQF0mwlgxy6hTk5ebA?pwd=7g68](). The extraction code to access the dataset is 7g68, and it is publicly available
 
-## 3.How to do
+## 3. How to do
 
 Place the data files into the "Datasets" folder. Simply run the "main.py" file to execute.
 
-## Attention
+## 4. Attention
 
 If you have any questions, please feel free to contact me.    Email:2220902206@cnu.edu.cn
