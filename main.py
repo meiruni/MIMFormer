@@ -35,12 +35,8 @@ def train(epoch, optimizer):
         optimizer.zero_grad()
         # print(Y.shape)
         # print(Z.shape)
-        if opt.arch == 'CSSNET':
-            HX = model(Y, Y, Z)
-            # print("CSSNET")
 
-        else:
-            HX = model(Z, Y)
+        HX = model(Z, Y)
 
         # alpha = opt.alpha
         loss = criterion(HX, X)
@@ -60,7 +56,7 @@ def train(epoch, optimizer):
 
 
 def test(path,save_path):
-    load_dict = torch.load(path +'/'+ "{}.pth".format('epoch100CAVE'))
+    load_dict = torch.load(path +'/'+opt.dataset + ".pth")
     opt.lr = load_dict['lr']
     epoch = load_dict['epoch']
     model.load_state_dict(load_dict['param'])
@@ -81,13 +77,7 @@ def test(path,save_path):
             X = Variable(X).float()
             # print(Y.shape)
             # print(Z.shape)
-            if opt.arch == 'CSSNET':
-                HX = model(Y, Y, Z)
-                # print("CSSNET")
-
-            else:
-                HX = model(Z, Y)
-
+            HX = model(Z, Y)
             im_name = batch[3][0]
             print(im_name)
             (path, filename) = os.path.split(im_name)
@@ -128,12 +118,8 @@ def valid(current_epoch=0, max_psnr=0, max_ssim=0, max_psnr_epoch=0, max_ssim_ep
             X = Variable(X).float()
             # print(Y.shape)
             # print(Z.shape)
-            if opt.arch == 'CSSNET':
-                HX = model(Y, Y, Z)
-                # print("CSSNET")
 
-            else:
-                HX = model(Z, Y)
+            HX = model(Z, Y)
 
             HX = torch.clamp(HX, 0.0, 1.0)
             loss = criterion(HX, X)

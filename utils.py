@@ -13,7 +13,7 @@ from models.MIMFormer_ZY import MIMFormer
 from models.FCSwinU import FSwinU
 from models.DCT import DCT
 from models.network_31 import _3DT_Net
-from models.CSSNET import cross_scale_attention_spe
+from models.CSSNET import Our_net
 from models.SSFCNN import SSFCNN
 from models.MSDCNN import MSDCNN
 from models.Fusformer import MainNet
@@ -23,7 +23,7 @@ from models.PSRT import PSRTnet
 from models.TFNet import ResTFNet
 import torch
 import numpy as np
-# from skimage.metrics import structural_similarity
+from skimage.metrics import structural_similarity
 import logging
 import argparse
 
@@ -109,11 +109,12 @@ def select_model(args, device):
             args.upscale_factor,
         ).to(device)
     elif args.arch == 'CSSNET':
-        model = cross_scale_attention_spe('CSSNET',
-                                          args.hsi_chans,
-                                          args.msi_chans,
-                                          args.upscale_factor,
-                                          ).to(device)
+        model = Our_net(
+                          args.hsi_chans,
+                          args.msi_chans,
+                          64,
+                          args.upscale_factor,
+                          ).to(device)
     elif args.arch == 'DCT':
         model = DCT(
             args.hsi_chans,
@@ -319,7 +320,7 @@ def load_pretrained_dict(path, opt, model, optimizer):
 
 
 def checkpoint(epoch, optimizer, opt, model, path):
-    model_out_path = path + '/epoch' + str(epoch) + "{}.pth".format(opt.dataset)
+    model_out_path = path + '/' + "{}.pth".format(opt.dataset)
     save_dict = dict(
         lr=optimizer.state_dict()['param_groups'][0]['lr'],
         param=model.state_dict(),
