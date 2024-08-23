@@ -31,7 +31,7 @@ import argparse
 def args_parser():
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch Super Res Example')
-    parser.add_argument('--arch', type=str, default='MIMFormer_AC', help=
+    parser.add_argument('--arch', type=str, default='MIMFormer', help=
                                                                     'MIMFormer'
                                                                     'SSFCNN '
                                                                     'Fusformer'
