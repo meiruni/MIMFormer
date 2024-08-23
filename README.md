@@ -1,9 +1,6 @@
 
 # MIMFormer:Multiscale Inception Mixer Transformer for  Hyperspectral and Multispectral Image Fusion
 
-
-
-
 ## Network Architecture
 
 - The overall architecture diagram of our proposed MIMFormer network.
@@ -40,5 +37,18 @@ Simply use the "pip install" command to install the following packages:
 Place the data files into the "Datasets" folder. Simply run the "main.py" file to execute.
 
 ## 4. Attention
-
+This repository is based on the excellent work of  [SSRNET](https://github.com/hw2hwei/SSRNET) and [3DT-Net](https://github.com/qingma2016/3DT-Net)
 If you have any questions, please feel free to contact me.    Email:2220902206@cnu.edu.cn
+
+## 5. Citation
+If this repo helps you, please consider citing our works:
+@ARTICLE{10643657,
+  author={Li, Rumei and Zhang, Liyan and Wang, Zun and Li, Xiaojuan},
+  journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing}, 
+  title={MIMFormer:Multiscale Inception Mixer Transformer for Hyperspectral and Multispectral Image Fusion}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-14},
+  keywords={Hyperspectral image (HSI);multispectral image (MSI);image fusion;deep learning;Transformer},
+  doi={10.1109/JSTARS.2024.3447648}}
