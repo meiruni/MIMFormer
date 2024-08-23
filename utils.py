@@ -1,24 +1,18 @@
 import os
 import random
-
-from models.Ablation_FSwinU.FFCSWINT import FFCSWINT
-from models.Ablation_FSwinU.FFCUNET import FFCUNET
-from models.Ablation_FSwinU.SWINU import SWINU
 from models.Ablation_MIMFormer.MIMFormer_DCD import MIMFormer_DCD
 from models.Ablation_MIMFormer.MIMFormer_NATTEN import MIMFormer_NATTEN
 from models.Ablation_MIMFormer.MIMFormer_NDWCONV import MIMFormer_NDWCONV
 from models.Ablation_MIMFormer.MIMFormer_NMaxpool import MIMFormer_NMaxpool
-
-from models.MIMFormer_ZY import MIMFormer
-from models.FCSwinU import FSwinU
+from models.IIT import IIT
+from models.InTransformer import InTransformer
+from models.FSwinU import FSwinU
 from models.DCT import DCT
-from models.network_31 import _3DT_Net
-from models.CSSNET import Our_net
 from models.SSFCNN import SSFCNN
 from models.MSDCNN import MSDCNN
-from models.Fusformer import MainNet
+from models.Fuformer import MainNet
 from models.TFNet import TFNet
-
+from models.SSRNET import SSRNET
 from models.PSRT import PSRTnet
 from models.TFNet import ResTFNet
 import torch
@@ -31,27 +25,25 @@ import argparse
 def args_parser():
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch Super Res Example')
-    parser.add_argument('--arch', type=str, default='CSSNET', help=
-                                                                    'MIMFormer'
-                                                                    'SSFCNN '
-                                                                    ' Fusformer'
-                                                                    ' MSDCNN'
-                                                                    'TFNET'
-                                                                    '3DT-Net'
-                                                                    'CSSNET'
-                                                                    'PSRT'
-                                                                    'MIMFormer_DCD'
-                                                                    'MIMFormer_NATTEN'
-                                                                    'MIMFormer_NMaxpool'
-                                                                    'MIMFormer_NDWCONV'
-                                                                                        )
-    parser.add_argument('--dataset', type=str, default='CAVE', help='ZY1E CAVE  WDCM or PU Harvard')
-    parser.add_argument('--upscale_factor', type=int, default=8, help="3 8 16 ")
+    parser.add_argument('--arch', type=str, default='InTransformer', help=
+                                                                'MIMFormer'
+                                                                'SSFCNN '
+                                                               ' Fuformer'
+                                                               ' MSDCNN'
+                                                                'TFNET'
+                                                                'MIMFormer_DCD'
+                                                                'MIMFormer_NATTEN'
+                                                                'MIMFormer_NMaxpool'
+                                                                'MIMFormer_NDWCONV'
+                                                                        )
+    parser.add_argument('--dataset', type=str, default='ZY', help='ZY CAVE  WDCM or PU Harvard')
+    parser.add_argument('--upscale_factor', type=int, default=3, help="3 8 16 ")
     parser.add_argument('--batchSize', type=int, default=16, help='training batch size')
-    parser.add_argument('--patch_size', type=int, default=8, help='cave wdcm and PU:8  ZY:20')
+    parser.add_argument('--patch_size', type=int, default=20, help='cave: 64 32 wdcm and PU: 16 8 ')
+    #Fuformer训练大小是64x64 --> 4 or 8
     parser.add_argument('--num_feature', default=0, type=int, help='hsi+msi  34 201 97')
     parser.add_argument('--img_size', default=64, type=int, help='512  128  128.')
-    parser.add_argument('--hsi_chans', type=int, default=0, help='output channel number 31 191 93')
+    parser.add_argument('--hsi_chans', type=int, default=0 ,help='output channel number 31 191 93')
     parser.add_argument('--msi_chans', type=int, default=0, help='3 10 4')
 
     parser.add_argument('--val_every', type=int, default=5, help='val_every number')
@@ -69,108 +61,135 @@ def args_parser():
     return args
 
 
-def select_model(args, device):
+def select_model(args,device):
     if args.dataset == 'PU':
-        args.hsi_chans = 93
-        args.msi_chans = 4
-        args.num_feature = 97
+      args.hsi_chans = 93
+      args.msi_chans = 4
+      args.num_feature = 97
     elif args.dataset == 'CAVE':
-        args.hsi_chans = 31
-        args.msi_chans = 3
-        args.num_feature = 34
+      args.hsi_chans = 31
+      args.msi_chans = 3
+      args.num_feature = 34
+    elif args.dataset == 'Harvard':
+      args.hsi_chans = 31
+      args.msi_chans = 3
+      args.num_feature = 34
     elif args.dataset == 'WDCM':
-        args.hsi_chans = 191
-        args.msi_chans = 10
-        args.num_feature = 201
-    elif args.dataset == 'ZY1E':
+      args.hsi_chans = 191
+      args.msi_chans = 10
+      args.num_feature = 201
+    elif args.dataset == 'ZY':
         args.hsi_chans = 76
         args.msi_chans = 8
         args.num_feature = 120
-
+    elif args.dataset == 'KSC':
+      args.hsi_chans = 176
+    elif args.dataset == 'Urban':
+      args.hsi_chans = 162
+    elif args.dataset == 'IndianP':
+      args.hsi_chans = 200
+    elif args.dataset == 'Washington':
+      args.hsi_chans = 191
+    elif args.dataset == 'HHK':
+      args.hsi_chans = 280
+    elif args.dataset == 'PYH':
+      args.hsi_chans = 284
+    elif args.dataset == 'Chikusei':
+      args.hsi_chans = 128
     # Build the models
-    if args.arch == 'SSFCNN':  # 1
-        model = SSFCNN(args.upscale_factor,
-                       args.msi_chans,
-                       args.hsi_chans).to(device)
-    elif args.arch == '3DT-Net':
-        model = _3DT_Net(args.hsi_chans,
-                         args.msi_chans,
-                         args.upscale_factor,
-                         args.patch_size).to(device)
+    if args.arch == 'SSFCNN': #1
+      model = SSFCNN(args.upscale_factor,
+                     args.msi_chans,
+                     args.hsi_chans).to(device)
+    elif args.arch == 'IIT':
+      model = IIT(args.hsi_chans,
+                  args.msi_chans,
+                       args.upscale_factor,
+                       args.patch_size).to(device)
     elif args.arch == 'TFNET':
-        model = TFNet(args.upscale_factor,
-                      args.msi_chans,
-                      args.hsi_chans,
-                      ).to(device)
+      model = TFNet(args.upscale_factor,
+                        args.msi_chans,
+                        args.hsi_chans,
+                        ).to(device)
+    elif args.arch == 'ResTFNet':
+      model = ResTFNet(args.upscale_factor,
+                        args.msi_chans,
+                        args.hsi_chans,
+                        ).to(device)
     elif args.arch == 'PSRT':
-        model = PSRTnet(
-            args.hsi_chans,
-            args.msi_chans,
-            args.upscale_factor,
-        ).to(device)
-    elif args.arch == 'CSSNET':
-        model = Our_net(
-                          args.hsi_chans,
-                          args.msi_chans,
-                          64,
-                          args.upscale_factor,
-                          ).to(device)
+      model = PSRTnet(
+                     args.hsi_chans,
+                     args.msi_chans,
+                     args.upscale_factor,
+                        ).to(device)
+    elif args.arch == 'SSRNET':
+        model = SSRNET('SSRNET',
+                        args.upscale_factor,
+                         args.msi_chans,
+                         args.hsi_chans,
+                         ).to(device)
+
     elif args.arch == 'DCT':
+        # model = DCT(n_colors=31, upscale_factor=8).to('cuda:0')
         model = DCT(
-            args.hsi_chans,
-            args.msi_chans,
-            args.upscale_factor,
-
-        ).to(device)
+                    args.hsi_chans,
+                    args.upscale_factor,
+                       ).to(device)
     elif args.arch == 'MSDCNN':
-        model = MSDCNN(args.upscale_factor,
-                       args.msi_chans,
-                       args.hsi_chans).to(device)
-    elif args.arch == 'MIMFormer':
-        model = MIMFormer(args.hsi_chans,
-                          args.msi_chans,
-                          args.upscale_factor).to(device)
+      model = MSDCNN(args.upscale_factor,
+                     args.msi_chans,
+                     args.hsi_chans).to(device)
 
+    elif args.arch == 'MIMFormer':
+      model = InTransformer(args.hsi_chans,
+                      args.msi_chans,
+                      args.upscale_factor).to(device)
+    elif args.arch == 'InTransformer':
+        model = InTransformer(args.hsi_chans,
+                    args.msi_chans,
+                    args.upscale_factor).to(device)
     elif args.arch == 'MIMFormer_DCD':
         model = MIMFormer_DCD(args.hsi_chans,
-                              args.msi_chans,
-                              args.upscale_factor).to(device)
+                    args.msi_chans,
+                    args.upscale_factor).to(device)
     elif args.arch == 'MIMFormer_NATTEN':
         model = MIMFormer_NATTEN(args.hsi_chans,
-                                 args.msi_chans,
-                                 args.upscale_factor).to(device)
+                    args.msi_chans,
+                    args.upscale_factor).to(device)
     elif args.arch == 'MIMFormer_NMaxpool':
         model = MIMFormer_NMaxpool(args.hsi_chans,
-                                   args.msi_chans,
-                                   args.upscale_factor).to(device)
+                    args.msi_chans,
+                    args.upscale_factor).to(device)
     elif args.arch == 'MIMFormer_NDWCONV':
         model = MIMFormer_NDWCONV(args.hsi_chans,
-                                  args.msi_chans,
-                                  args.upscale_factor).to(device)
-    elif args.arch == 'Fusformer':  # 1
-        model = MainNet(args.hsi_chans,
-                        args.msi_chans,
-                        args.upscale_factor).to(device)
+                    args.msi_chans,
+                    args.upscale_factor).to(device)
+
+    elif args.arch == 'Fuformer': #1
+      model = MainNet(args.hsi_chans,
+                      args.msi_chans,
+                      args.upscale_factor).to(device)
     elif args.arch == 'SWINU':  # 1
-        model = SWINU(args.img_size,
+      model = SWINU(args.img_size,
                       args.hsi_chans,
                       args.num_feature,
                       args.upscale_factor).to(device)
     elif args.arch == 'FFCUNET':  # 1
-        model = FFCUNET(args.hsi_chans,
-                        args.num_feature,
-                        args.upscale_factor).to(device)
+      model = FFCUNET(args.hsi_chans,
+                       args.num_feature,
+                       args.upscale_factor).to(device)
     elif args.arch == 'FFCSWINT':  # 1
-        model = FFCSWINT(args.hsi_chans,
-                         args.num_feature,
-                         args.upscale_factor).to(device)
+      model = FFCSWINT(args.hsi_chans,
+                       args.num_feature,
+                       args.upscale_factor).to(device)
 
-    else:  # proposed  1
-        print('请检查你的模型是否输入正确！！')
+    else: #proposed  1
+       model = FSwinU(args.img_size,
+                      args.hsi_chans,
+                      args.num_feature,
+                      args.upscale_factor).to(device)
 
     return model
-
-
 def calc_ergas(img_tgt, img_fus):
     img_tgt = torch.squeeze(img_tgt)
     img_tgt = img_tgt.reshape(img_tgt.shape[0], -1)
@@ -186,29 +205,27 @@ def calc_ergas(img_tgt, img_fus):
 
     return ergas.item()
 
-
 def calc_psnr(img_tgt, img_fus):
     img_tgt = torch.squeeze(img_tgt)
     img_tgt = img_tgt.reshape(img_tgt.shape[0], -1)
     img_fus = torch.squeeze(img_fus)
     img_fus = img_fus.reshape(img_fus.shape[0], -1)
-    mse = torch.mean(torch.square(img_tgt - img_fus))
+    mse = torch.mean(torch.square(img_tgt-img_fus))
     img_max = torch.max(img_tgt)
-    # img_max = 1.0
-    psnr = 10.0 * torch.log10(img_max ** 2 / mse)
+    #img_max = 1.0
+    psnr = 10.0 * torch.log10(img_max**2/mse)
 
     return psnr.item()
 
-
 def calc_rmse(img_tgt, img_fus):
+
     img_tgt = torch.squeeze(img_tgt)
     img_tgt = img_tgt.reshape(img_tgt.shape[0], -1)
     img_fus = torch.squeeze(img_fus)
     img_fus = img_fus.reshape(img_fus.shape[0], -1)
-    rmse = torch.sqrt(torch.mean((img_tgt - img_fus) ** 2))
+    rmse = torch.sqrt(torch.mean((img_tgt-img_fus)**2))
 
     return rmse.item()
-
 
 def calc_sam(img_tgt, img_fus):
     img_tgt = torch.squeeze(img_tgt)
@@ -218,17 +235,16 @@ def calc_sam(img_tgt, img_fus):
     img_tgt = img_tgt / torch.max(img_tgt)
     img_fus = img_fus / torch.max(img_fus)
 
-    A = torch.sqrt(torch.sum(img_tgt ** 2))
-    B = torch.sqrt(torch.sum(img_fus ** 2))
-    AB = torch.sum(img_tgt * img_fus)
+    A = torch.sqrt(torch.sum(img_tgt**2))
+    B = torch.sqrt(torch.sum(img_fus**2))
+    AB = torch.sum(img_tgt*img_fus)
 
-    sam = AB / (A * B)
+    sam = AB/(A*B)
 
     sam = torch.arccos(sam)
-    sam = torch.mean(sam) * 180 / torch.pi
+    sam = torch.mean(sam)*180/torch.pi
 
     return sam.item()
-
 
 def calc_ssim(img_tgt, img_fus):
     '''
@@ -244,10 +260,9 @@ def calc_ssim(img_tgt, img_fus):
     img_tgt = img_tgt.cpu().numpy()
     img_fus = img_fus.cpu().numpy()
 
-    ssim = structural_similarity(img_tgt, img_fus, data_range=1.0)
+    ssim = structural_similarity(img_tgt, img_fus,data_range=1.0)
 
     return ssim
-
 
 class Logger(object):
     def __init__(self, log_file_name, logger_name, log_level=logging.DEBUG):
@@ -302,9 +317,9 @@ def create_log_file(file_path):
         except IOError:
             print("Error: Failed to create the log file.")
 
+def load_pretrained_dict(path,opt,model,optimizer):
 
-def load_pretrained_dict(path, opt, model, optimizer):
-    load_dict = torch.load(os.path.join(path + '/' + "{}.pth".format(opt.dataset)))
+    load_dict = torch.load(os.path.join(path+'/' +"{}.pth".format(opt.dataset)))
     # 从load_dict中提取需要加载的参数
     load_param = load_dict['param']
     updated_load_param = {}
@@ -319,8 +334,8 @@ def load_pretrained_dict(path, opt, model, optimizer):
     model.load_state_dict(model_dict)
 
 
-def checkpoint(epoch, optimizer, opt, model, path):
-    model_out_path = path + '/' + "{}.pth".format(opt.dataset)
+def checkpoint(epoch,optimizer,opt,model,path):
+    model_out_path =path +'/epoch'+ str(epoch) + "{}.pth".format(opt.dataset)
     save_dict = dict(
         lr=optimizer.state_dict()['param_groups'][0]['lr'],
         param=model.state_dict(),

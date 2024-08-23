@@ -30,13 +30,12 @@ def train(epoch, optimizer):
 
     for iteration, batch in tqdm(enumerate(training_data_loader, 1), total=len(training_data_loader)):
         # with torch.autograd.set_detect_anomaly(True):
-        Z, Y, X = batch[0].float().cuda(), batch[1].float().cuda(), batch[2].float().cuda()
+        Y, Z, X = batch[0].float().cuda(), batch[1].float().cuda(), batch[2].float().cuda()
 
         optimizer.zero_grad()
         # print(Y.shape)
         # print(Z.shape)
-
-        HX = model(Z, Y)
+        HX = model(Y, Z)
 
         # alpha = opt.alpha
         loss = criterion(HX, X)
@@ -56,7 +55,7 @@ def train(epoch, optimizer):
 
 
 def test(path,save_path):
-    load_dict = torch.load(path +'/'+opt.dataset + ".pth")
+    load_dict = torch.load(path +'/'+ "{}.pth".format('epoch100CAVE'))
     opt.lr = load_dict['lr']
     epoch = load_dict['epoch']
     model.load_state_dict(load_dict['param'])
@@ -71,13 +70,13 @@ def test(path,save_path):
     with torch.no_grad():
         for iteration, batch in tqdm(enumerate(testing_data_loader, 1), total=len(testing_data_loader)):
             # for batch in testing_data_loader:
-            Z, Y, X = batch[0].cuda(), batch[1].cuda(), batch[2].cuda()
+            Y, Z, X = batch[0].cuda(), batch[1].cuda(), batch[2].cuda()
             Y = Variable(Y).float()
             Z = Variable(Z).float()
             X = Variable(X).float()
             # print(Y.shape)
             # print(Z.shape)
-            HX = model(Z, Y)
+            HX = model(Y, Z)
             im_name = batch[3][0]
             print(im_name)
             (path, filename) = os.path.split(im_name)
@@ -112,14 +111,13 @@ def valid(current_epoch=0, max_psnr=0, max_ssim=0, max_psnr_epoch=0, max_ssim_ep
     with torch.no_grad():
         for iteration, batch in tqdm(enumerate(testing_data_loader, 1), total=len(testing_data_loader)):
             # for batch in valid_data_loader:
-            Z, Y, X = batch[0].cuda(), batch[1].cuda(), batch[2].cuda()
+            Y, Z, X = batch[0].cuda(), batch[1].cuda(), batch[2].cuda()
             Y = Variable(Y).float()
             Z = Variable(Z).float()
             X = Variable(X).float()
             # print(Y.shape)
             # print(Z.shape)
-
-            HX = model(Z, Y)
+            HX = model(Y, Z)
 
             HX = torch.clamp(HX, 0.0, 1.0)
             loss = criterion(HX, X)
