@@ -30,7 +30,7 @@ Simply use the "pip install" command to install the following packages:
 - Download the CAVE dataset from <a href="https://www1.cs.columbia.edu/CAVE/databases/multispectral">here</a>.
 - Download the PU dataset from <a href="[Hyperspectral Remote Sensing Scenes - Grupo de Inteligencia Computacional (GIC) (ehu.eus)](https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes)">here</a>.
 - Download the WDCM dataset from <a href="[MSST-Net/README.md at main · jx-mzc/MSST-Net · GitHub](https://github.com/jx-mzc/MSST-Net/blob/main/README.md)">here</a>.
--  the real remote sensing dataset ZY1E, which was used in this study, has been completely uploaded and can be accessed through the following link: [https: //pan.baidu.com/s/1qoY9tQF0mwlgxy6hTk5ebA?pwd=7g68](). The extraction code to access the dataset is 7g68, and it is publicly available
+-  the real remote sensing dataset ZY1E, which was used in this study, has been completely uploaded and can be accessed through the following link: [https://pan.baidu.com/s/10KHvZowrlPpB3nFlyRRt3g code: ZY1E](). The extraction code to access the dataset is 7g68, and it is publicly available
 
 ## 3. How to do
 
@@ -44,13 +44,9 @@ If you have any questions, please feel free to contact me.    Email:2220902206@c
 ## 5. Citation
 If this repo helps you, please consider citing our works:
 > @ARTICLE{10643657,
-> 
  > author={Li, Rumei and Zhang, Liyan and Wang, Zun and Li, Xiaojuan},
-> 
  > journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing},
-> 
  > title={MIMFormer:Multiscale Inception Mixer Transformer for Hyperspectral and Multispectral Image Fusion},
-> 
  > year={2024},
 > 
  > volume={},
