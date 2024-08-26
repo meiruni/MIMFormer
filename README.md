@@ -27,9 +27,9 @@ Simply use the "pip install" command to install the following packages:
 
 ## 2. Data Preparation:
 
-- Download the CAVE dataset from <a href="https://www1.cs.columbia.edu/CAVE/databases/multispectral">here</a>.
+- Download the CAVE dataset from <a href="https://www.cs.columbia.edu/CAVE/databases/multispectral">here</a>.
 - Download the PU dataset from <a href="https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes">here</a>.
-- Download the WDCM dataset from <a href="[MSST-Net/README.md at main · jx-mzc/MSST-Net · GitHub](https://github.com/jx-mzc/MSST-Net/blob/main/README.md)">here</a>.
+- Download the WDCM dataset from <a href="https://github.com/jx-mzc/MSST-Net/blob/main/README.md">here</a>.
 -  the real remote sensing dataset ZY1E, which was used in this study, has been completely uploaded and can be accessed through the following link: [ZY1E](https://pan.baidu.com/s/10KHvZowrlPpB3nFlyRRt3g). The extraction code to access the dataset is ZY1E, and it is publicly available
 
 ## 3. How to do
