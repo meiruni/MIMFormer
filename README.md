@@ -18,9 +18,11 @@
 open the anaconda prompt
 
 - conda create -n MIMFormer python=3.8
+- conda activate MIMFormer
 - pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 Simply use the "pip install" command to install the following packages:
+
 
 - pip install timm -i https://pypi.tuna.tsinghua.edu.cn/simple
 - pip install thop -i https://pypi.tuna.tsinghua.edu.cn/simple
