@@ -50,7 +50,7 @@ tensorboard --logdir==tf-logs
 ## 4. Attention
 This repository is based on the excellent work of  [SSRNET](https://github.com/hw2hwei/SSRNET) and [3DT-Net](https://github.com/qingma2016/3DT-Net).
 
-If you have any questions, please feel free to contact me.    Email:2220902206@cnu.edu.cn
+If you have any questions, please feel free to contact me.    Email:2220902206@cnu.edu.cn    WeChat:ictnet1
 
 ## 5. Citation
 If this repo helps you, please consider citing our works:
