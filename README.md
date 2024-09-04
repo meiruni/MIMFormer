@@ -14,7 +14,9 @@
 
 - Python 3 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
 - NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads)
-open the anaconda prompt 
+  
+open the anaconda prompt
+
 - conda create -n MIMFormer python=3.8
 - pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
