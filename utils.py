@@ -1,29 +1,28 @@
 import os
 import random
-
-from models.Ablation_FSwinU.FFCSWINT import FFCSWINT
-from models.Ablation_FSwinU.FFCUNET import FFCUNET
-from models.Ablation_FSwinU.SWINU import SWINU
-from models.Ablation_MIMFormer.MIMFormer_DCD import MIMFormer_DCD
-from models.Ablation_MIMFormer.MIMFormer_NATTEN import MIMFormer_NATTEN
-from models.Ablation_MIMFormer.MIMFormer_NDWCONV import MIMFormer_NDWCONV
-from models.Ablation_MIMFormer.MIMFormer_NMaxpool import MIMFormer_NMaxpool
-from models.Ablation_MIMFormer.SSM.MIMFormer_NSSM import  MIMFormer_NSSM
-from models.Ablation_MIMFormer.SSM.MIMFormer_AC import MIMFormer_AC
-from models.MIMFormer_ZY import MIMFormer
-from models.FCSwinU import FSwinU
-from models.DCT import DCT
-from models.network_31 import _3DT_Net
-from models.CSSNET import Our_net
-from models.SSFCNN import SSFCNN
-from models.MSDCNN import MSDCNN
-from models.Fusformer import MainNet
-from models.TFNet import TFNet
-from models.PSRT import PSRTnet
-from models.TFNet import ResTFNet
+# from models.Ablation_FSwinU.FFCSWINT import FFCSWINT
+# from models.Ablation_FSwinU.FFCUNET import FFCUNET
+# from models.Ablation_FSwinU.SWINU import SWINU
+# from models.Ablation_MIMFormer.MIMFormer_DCD import MIMFormer_DCD
+# from models.Ablation_MIMFormer.MIMFormer_NATTEN import MIMFormer_NATTEN
+# from models.Ablation_MIMFormer.MIMFormer_NDWCONV import MIMFormer_NDWCONV
+# from models.Ablation_MIMFormer.MIMFormer_NMaxpool import MIMFormer_NMaxpool
+# from models.Ablation_MIMFormer.SSM.MIMFormer_NSSM import  MIMFormer_NSSM
+# from models.Ablation_MIMFormer.SSM.MIMFormer_AC import MIMFormer_AC
+from models.MIMFormer_CPW import MIMFormer
+# from models.FCSwinU import FSwinU
+# from models.DCT import DCT
+# from models.network_31 import _3DT_Net
+# from models.CSSNET import Our_net
+# from models.SSFCNN import SSFCNN
+# from models.MSDCNN import MSDCNN
+# from models.Fusformer import MainNet
+# from models.TFNet import TFNet
+# from models.PSRT import PSRTnet
+# from models.TFNet import ResTFNet
 import torch
 import numpy as np
-# from skimage.metrics import structural_similarity
+from skimage.metrics import structural_similarity
 import logging
 import argparse
 
@@ -33,19 +32,19 @@ def args_parser():
     parser = argparse.ArgumentParser(description='PyTorch Super Res Example')
     parser.add_argument('--arch', type=str, default='MIMFormer', help=
                                                                     'MIMFormer'
-                                                                    'SSFCNN '
-                                                                    'Fusformer'
-                                                                    'MSDCNN'
-                                                                    'TFNET'
-                                                                    '3DT-Net'
-                                                                    'CSSNET'
-                                                                    'PSRT'
-                                                                    'MIMFormer_DCD'
-                                                                    'MIMFormer_NATTEN'
-                                                                    'MIMFormer_NMaxpool'
-                                                                    'MIMFormer_NDWCONV'
-                                                                    'MIMFormer_NSSM'
-                                                                    'MIMFormer_AC'
+                                                                    # 'SSFCNN '
+                                                                    # 'Fusformer'
+                                                                    # 'MSDCNN'
+                                                                    # 'TFNET'
+                                                                    # '3DT-Net'
+                                                                    # 'CSSNET'
+                                                                    # 'PSRT'
+                                                                    # 'MIMFormer_DCD'
+                                                                    # 'MIMFormer_NATTEN'
+                                                                    # 'MIMFormer_NMaxpool'
+                                                                    # 'MIMFormer_NDWCONV'
+                                                                    # 'MIMFormer_NSSM'
+                                                                    # 'MIMFormer_AC'
                                                                                 )
     parser.add_argument('--dataset', type=str, default='CAVE', help='ZY1E CAVE  WDCM or PU Harvard')
     parser.add_argument('--upscale_factor', type=int, default=8, help="3 8 16 ")
@@ -90,90 +89,90 @@ def select_model(args, device):
         args.num_feature = 120
 
     # Build the models
-    if args.arch == 'SSFCNN':  # 1
-        model = SSFCNN(args.upscale_factor,
-                       args.msi_chans,
-                       args.hsi_chans).to(device)
-    elif args.arch == '3DT-Net':
-        model = _3DT_Net(args.hsi_chans,
-                         args.msi_chans,
-                         args.upscale_factor,
-                         args.patch_size).to(device)
-    elif args.arch == 'TFNET':
-        model = TFNet(args.upscale_factor,
-                      args.msi_chans,
-                      args.hsi_chans,
-                      ).to(device)
-    elif args.arch == 'PSRT':
-        model = PSRTnet(
-            args.hsi_chans,
-            args.msi_chans,
-            args.upscale_factor,
-        ).to(device)
-    elif args.arch == 'CSSNET':
-        model = Our_net(
-                          args.hsi_chans,
-                          args.msi_chans,
-                          64,
-                          args.upscale_factor,
-                          ).to(device)
-    elif args.arch == 'DCT':
-        model = DCT(
-            args.hsi_chans,
-            args.msi_chans,
-            args.upscale_factor,
-
-        ).to(device)
-    elif args.arch == 'MSDCNN':
-        model = MSDCNN(args.upscale_factor,
-                       args.msi_chans,
-                       args.hsi_chans).to(device)
-    elif args.arch == 'MIMFormer':
+    if args.arch == 'MIMFormer':
         model = MIMFormer(args.hsi_chans,
                           args.msi_chans,
                           args.upscale_factor).to(device)
+    #     model = SSFCNN(args.upscale_factor,
+    #                    args.msi_chans,
+    #                    args.hsi_chans).to(device)
+    # elif args.arch == '3DT-Net':
+    #     model = _3DT_Net(args.hsi_chans,
+    #                      args.msi_chans,
+    #                      args.upscale_factor,
+    #                      args.patch_size).to(device)
+    # elif args.arch == 'TFNET':
+    #     model = TFNet(args.upscale_factor,
+    #                   args.msi_chans,
+    #                   args.hsi_chans,
+    #                   ).to(device)
+    # elif args.arch == 'PSRT':
+    #     model = PSRTnet(
+    #         args.hsi_chans,
+    #         args.msi_chans,
+    #         args.upscale_factor,
+    #     ).to(device)
+    # elif args.arch == 'CSSNET':
+    #     model = Our_net(
+    #                       args.hsi_chans,
+    #                       args.msi_chans,
+    #                       64,
+    #                       args.upscale_factor,
+    #                       ).to(device)
+    # elif args.arch == 'DCT':
+    #     model = DCT(
+    #         args.hsi_chans,
+    #         args.msi_chans,
+    #         args.upscale_factor,
+    #
+    #     ).to(device)
+    # elif args.arch == 'MSDCNN':
+    #     model = MSDCNN(args.upscale_factor,
+    #                    args.msi_chans,
+    #                    args.hsi_chans).to(device)
 
-    elif args.arch == 'MIMFormer_DCD':
-        model = MIMFormer_DCD(args.hsi_chans,
-                              args.msi_chans,
-                              args.upscale_factor).to(device)
-    elif args.arch == 'MIMFormer_NATTEN':
-        model = MIMFormer_NATTEN(args.hsi_chans,
-                                 args.msi_chans,
-                                 args.upscale_factor).to(device)
-    elif args.arch == 'MIMFormer_NMaxpool':
-        model = MIMFormer_NMaxpool(args.hsi_chans,
-                                   args.msi_chans,
-                                   args.upscale_factor).to(device)
-    elif args.arch == 'MIMFormer_NDWCONV':
-        model = MIMFormer_NDWCONV(args.hsi_chans,
-                                  args.msi_chans,
-                                  args.upscale_factor).to(device)
-    elif args.arch == 'MIMFormer_NSSM':
-        model = MIMFormer_NSSM(args.hsi_chans,
-                          args.msi_chans,
-                          args.upscale_factor).to(device)
-    elif args.arch == 'MIMFormer_AC':
-        model = MIMFormer_AC(args.hsi_chans,
-                          args.msi_chans,
-                          args.upscale_factor).to(device)
-    elif args.arch == 'Fusformer':  # 1
-        model = MainNet(args.hsi_chans,
-                        args.msi_chans,
-                        args.upscale_factor).to(device)
-    elif args.arch == 'SWINU':  # 1
-        model = SWINU(args.img_size,
-                      args.hsi_chans,
-                      args.num_feature,
-                      args.upscale_factor).to(device)
-    elif args.arch == 'FFCUNET':  # 1
-        model = FFCUNET(args.hsi_chans,
-                        args.num_feature,
-                        args.upscale_factor).to(device)
-    elif args.arch == 'FFCSWINT':  # 1
-        model = FFCSWINT(args.hsi_chans,
-                         args.num_feature,
-                         args.upscale_factor).to(device)
+    #
+    # elif args.arch == 'MIMFormer_DCD':
+    #     model = MIMFormer_DCD(args.hsi_chans,
+    #                           args.msi_chans,
+    #                           args.upscale_factor).to(device)
+    # elif args.arch == 'MIMFormer_NATTEN':
+    #     model = MIMFormer_NATTEN(args.hsi_chans,
+    #                              args.msi_chans,
+    #                              args.upscale_factor).to(device)
+    # elif args.arch == 'MIMFormer_NMaxpool':
+    #     model = MIMFormer_NMaxpool(args.hsi_chans,
+    #                                args.msi_chans,
+    #                                args.upscale_factor).to(device)
+    # elif args.arch == 'MIMFormer_NDWCONV':
+    #     model = MIMFormer_NDWCONV(args.hsi_chans,
+    #                               args.msi_chans,
+    #                               args.upscale_factor).to(device)
+    # elif args.arch == 'MIMFormer_NSSM':
+    #     model = MIMFormer_NSSM(args.hsi_chans,
+    #                       args.msi_chans,
+    #                       args.upscale_factor).to(device)
+    # elif args.arch == 'MIMFormer_AC':
+    #     model = MIMFormer_AC(args.hsi_chans,
+    #                       args.msi_chans,
+    #                       args.upscale_factor).to(device)
+    # elif args.arch == 'Fusformer':  # 1
+    #     model = MainNet(args.hsi_chans,
+    #                     args.msi_chans,
+    #                     args.upscale_factor).to(device)
+    # elif args.arch == 'SWINU':  # 1
+    #     model = SWINU(args.img_size,
+    #                   args.hsi_chans,
+    #                   args.num_feature,
+    #                   args.upscale_factor).to(device)
+    # elif args.arch == 'FFCUNET':  # 1
+    #     model = FFCUNET(args.hsi_chans,
+    #                     args.num_feature,
+    #                     args.upscale_factor).to(device)
+    # elif args.arch == 'FFCSWINT':  # 1
+    #     model = FFCSWINT(args.hsi_chans,
+    #                      args.num_feature,
+    #                      args.upscale_factor).to(device)
 
     else:  # proposed  1
         print('请检查你的模型是否输入正确！！')

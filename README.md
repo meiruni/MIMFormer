@@ -15,15 +15,18 @@
 - Python 3 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
 - NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads)
 
+创建python3.8虚拟环境
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
 Simply use the "pip install" command to install the following packages:
 
-- timm
-- thop
-- scikit-image
-- scipy
-- einops
-- opencv-python
-- tensorboard
+- pip install timm -i https://pypi.tuna.tsinghua.edu.cn/simple
+- pip install thop -i https://pypi.tuna.tsinghua.edu.cn/simple
+- pip install scikit-image -i https://pypi.tuna.tsinghua.edu.cn/simple
+- pip install scipy -i https://pypi.tuna.tsinghua.edu.cn/simple
+- pip install einops -i https://pypi.tuna.tsinghua.edu.cn/simple
+- pip install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple
+- pip install tensorboard -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ## 2. Data Preparation:
 
@@ -35,6 +38,7 @@ Simply use the "pip install" command to install the following packages:
 ## 3. How to do
 
 Place the data files into the "Datasets" folder. Simply run the "main.py" file to execute.
+tensorboard --logdir==tf-logs
 
 ## 4. Attention
 This repository is based on the excellent work of  [SSRNET](https://github.com/hw2hwei/SSRNET) and [3DT-Net](https://github.com/qingma2016/3DT-Net).
