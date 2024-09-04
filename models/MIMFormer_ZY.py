@@ -1,4 +1,4 @@
-
+#使用ZY1E的模型
 import logging
 # from scipy.ndimage import zoom
 from models.IT import InceptionTransformer, default_cfgs

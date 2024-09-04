@@ -1,7 +1,6 @@
-
+#CPW代表使用CAVE\PU\WDCM数据集的模型
 import logging
-# from scipy.ndimage import zoom
-from models.IT import InceptionTransformer, default_cfgs
+from models.IT import InceptionTransformer,default_cfgs
 _logger = logging.getLogger(__name__)
 import torch
 import torch.nn as nn
@@ -138,7 +137,8 @@ if __name__ == '__main__':
     #cave
     # LRHSI = torch.randn((1, 31, 128, 128))
     LRHSI = torch.randn((2, 31, 8, 8)).to('cuda:0')
-    HRMSI = torch.randn((2, 3, 64, 64)).to('cuda:0')
+    HRMSI = torch.randn((2, 3, 64, 64)).to('cuda:0'
+                                           '')
     # wdcm
     # LRHSI = torch.randn((1, 191, 8, 8))
     # LRHSI = torch.randn((1, 191, 16, 16))
