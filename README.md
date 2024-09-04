@@ -14,9 +14,9 @@
 
 - Python 3 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
 - NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads)
-
-创建python3.8虚拟环境
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+open the anaconda prompt 
+- conda create -n MIMFormer python=3.8
+- pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 Simply use the "pip install" command to install the following packages:
 
@@ -30,10 +30,12 @@ Simply use the "pip install" command to install the following packages:
 
 ## 2. Data Preparation:
 
-- Download the CAVE dataset from <a href="https://www.cs.columbia.edu/CAVE/databases/multispectral">here</a>.
+- Download the CAVE dataset from <a href="https://www.cs.columbia.edu/CAVE/databases/multispectral">here</a> or CAVE.zip https://pan.baidu.com/s/1dL0eOwSugFsn7tChCuGLsw code: hskt.
 - Download the PU dataset from <a href="https://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes">here</a>.
 - Download the WDCM dataset from <a href="https://github.com/jx-mzc/MSST-Net/blob/main/README.md">here</a>.
 -  the real remote sensing dataset ZY1E, which was used in this study, has been completely uploaded and can be accessed through the following link: [ZY1E](https://pan.baidu.com/s/10KHvZowrlPpB3nFlyRRt3g). The extraction code to access the dataset is ZY1E, and it is publicly available
+
+
 
 ## 3. How to do
 
